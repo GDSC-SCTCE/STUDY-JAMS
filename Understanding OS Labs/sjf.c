@@ -1,0 +1,78 @@
+#include <stdio.h>
+#define MAX_SIZE 50
+// Turnaround Time (TAT):
+// It is the time interval from the time of submission of a process to the time of the completion of the process.
+// Turn Around Time = Completion Time - Arrival Time
+
+// Waiting Time (WT):
+// The time spent by a process waiting in the ready queue for getting the CPU.
+// Waiting Time = Turn Around Time - Burst Time
+void bubblesort(int arr[],int arr2[],int arr3[],int size);
+void swap(int *a,int *b);
+int main(){
+    int n,time=0;
+    float avgwt=0,avgtat=0;
+    int AT[MAX_SIZE],BT[MAX_SIZE],CT[MAX_SIZE],WT[MAX_SIZE],TAT[MAX_SIZE];
+    int P[MAX_SIZE];
+    printf("Enter the number of processes : ");
+    scanf("%d",&n);
+
+    printf("Enter the Arrival Time and Burst Time :\n");
+    printf("\tArrival Time\tBurst Time :\n");
+ 
+    for(int i =0; i<n; i++){
+        printf("p[%d] : ",i+1);
+        scanf("%d",&AT[i]);
+        scanf("%d",&BT[i]);
+        P[i] = i+1;
+    }
+    bubblesort(BT,P,AT,n);
+    time = AT[0]; // initial time 
+    for(int i =0;i<n;i++){
+        time += BT[i]; // increasing the Time
+
+        CT[i] = time;   
+        TAT[i] = CT[i] - AT[i];
+        WT[i] = TAT[i]-BT[i];
+
+        avgtat+=TAT[i];
+        avgwt+=WT[i];
+    }
+    avgtat /= n;
+    avgwt /= n;
+    printf("\n*******************************************************\n\n");
+
+    printf("Process\tArrival Time\tBurst Time\tCompletion\tTurnAround\tWaiting\n");
+    for(int i=0;i<n;i++){
+        printf("P[%d]\t",P[i]);
+        printf("\t%d\t",AT[i]);
+        printf("\t%d\t",BT[i]);
+        printf("\t%d\t",CT[i]);
+        printf("\t%d\t",TAT[i]);
+        printf("\t%d\t\n",WT[i]);
+
+
+    }
+    printf("\nThe Average TurnAroundTime : %f",avgtat);
+    printf("\nThe Average WaitingTime : %f",avgwt);
+
+    return 0;
+}
+void swap(int *a,int *b){
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+void bubblesort(int arr[],int arr2[],int arr3[],int size){
+    for (int i = 0; i < size-1; i++){
+        int temp = 0;
+        for (int j = 0; j < size - i - 1; j++){
+            if (arr[j] > arr[j + 1]){ 
+                swap(&arr[j],&arr[j+1]);
+                swap(&arr2[j],&arr2[j+1]);
+                swap(&arr3[j],&arr3[j+1]);
+            }
+        }
+    }
+}
